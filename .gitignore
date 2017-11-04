@@ -1,4 +1,9 @@
 # Virtual Env
 venv
+
 #VS Code Gubbins
 .vscode
+
+# Cache
+bot/__pycache__
+.cache
