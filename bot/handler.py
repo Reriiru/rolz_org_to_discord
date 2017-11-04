@@ -1,20 +1,30 @@
 import commands
+import twitter
+import twitter.error
+import random
 
 from settings import MAX_STR_SIZE
 
 
 class MessageHandler(object):
-    def __init__(self, message, client, tmp):
+    def __init__(self, message, client, tmp=None):
         self.message = message
         self.client = client
         self.payload = None
-        self.tmp_message = tmp
+
+        self.tmp_message = None
 
         self._check_length()
 
         self.message.content = self._strip_special_chars()
 
         self._type = self._check_type()
+        self._twitter = twitter.Api(
+         consumer_key='yQaj8jUbjBAOlCjaMUfhX2A4n',
+         consumer_secret='88uYcFAUlWYfepF7268w5aR9pRsuX9RAfQOHKCsEdUTX710Rce',
+         access_token_key='489158548-3PM1kj018S5LkJUh9FKEvaCZrqmQI6g55ABJbI4C',
+         access_token_secret='p3Sy6wJPTAG3ooNFPxBID3XCoHloSLxw7KGLS6itHd1oV')
+        self._shitpost_id = 4462881555
 
     def _check_length(self):
         if len(self.message.content) > MAX_STR_SIZE:
@@ -25,6 +35,12 @@ class MessageHandler(object):
         tmp_message_content = tmp_message_content.replace("+", "%2B")
 
         return tmp_message_content
+
+    async def _post_tmp(self):
+        self.tmp_message = await self.client.send_message(
+                                 self.message.channel,
+                                 'Rolling the stones.'
+                                 )
 
     def _check_type(self):
         tmp_type = self.message.content.split('!')[1]
@@ -38,7 +54,6 @@ class MessageHandler(object):
             raise ValueError('Rolz is unavailable')
 
     async def _check_roll_validity(self):
-        print(self.payload)
         if not isinstance(self.payload['result'], int):
             response_string = '''
             Please, use valid rolz codes.
@@ -70,6 +85,7 @@ class MessageHandler(object):
 
     async def fill_payload(self):
         if self._type == 'roll':
+            await self._post_tmp()
             try:
                 self.payload = await commands.proxy(
                                 self.message.content.split('!')[1])
@@ -80,6 +96,7 @@ class MessageHandler(object):
             await self._check_roll_validity()
 
         elif self._type == 'repeat' or self._type == 'sum':
+            await self._post_tmp()
             repeats = self.message.content.split('%20')[1]
             roll_string = ''
 
@@ -98,6 +115,7 @@ class MessageHandler(object):
             await self._check_rolls_validity()
 
         elif self._type == 'choose':
+            await self._post_tmp()
             variants = self.message.content.split(',%20')
             variants[0] = variants[0].split('%20')[1]
 
@@ -114,10 +132,17 @@ class MessageHandler(object):
 
     async def post_message(self):
         if self._type == 'roll':
-            response_string = '''
-            Roll Result: {}
-            Roll Details: {}
-            '''.format(self.payload['result'], self.payload['details'])
+            dice_amount = self.message.content[8]
+            print(dice_amount)
+            if dice_amount.isdigit() and int(dice_amount) == 1:
+                response_string = '''
+                    Roll Result: {}
+                '''.format(self.payload['result'])
+            else:                
+                response_string = '''
+                Roll Result: {}
+                Roll Details: {}
+                '''.format(self.payload['result'], self.payload['details'])
 
             await self.client.edit_message(self.tmp_message, response_string)
 
@@ -185,3 +210,28 @@ class MessageHandler(object):
             '''
 
             await self.client.edit_message(self.tmp_message, response_string)
+        
+        elif self._type == 'shitpost':
+            response_string = '''
+            *flings a shitty picture*
+            {}
+            '''
+
+            try:
+                statuses = self._twitter.GetUserTimeline(self._shitpost_id,
+                                                         count=200)
+            except twitter.error.TwitterError:
+                await self.client.send_message(
+                                  self.message.channel,
+                                  "Twitter is too busy for shitposting, mate."
+                                  )
+                raise RuntimeError("Twitter doesn't respond properly.")
+
+            random_pic = random.choice(statuses)
+
+            response_string = response_string.format(
+                                random_pic.media[0].media_url_https
+                                )
+
+            await self.client.send_message(self.message.channel,
+                                           response_string)

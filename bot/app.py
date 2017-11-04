@@ -18,9 +18,8 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.content.startswith('!'):
-        tmp = await client.send_message(message.channel, 'Rolling the stones.')
         try:
-            message_handler = handler.MessageHandler(message, client, tmp)
+            message_handler = handler.MessageHandler(message, client)
         except ValueError:
             raise ValueError('Could not initialise the Handler')
 
