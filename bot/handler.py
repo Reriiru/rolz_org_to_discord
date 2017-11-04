@@ -2,6 +2,7 @@ import commands
 import twitter
 import twitter.error
 import random
+import format_responses
 
 from settings import MAX_STR_SIZE
 
@@ -11,6 +12,7 @@ class MessageHandler(object):
         self.message = message
         self.client = client
         self.payload = None
+        self.statuses = None
 
         self.tmp_message = None
 
@@ -23,8 +25,11 @@ class MessageHandler(object):
          consumer_key='yQaj8jUbjBAOlCjaMUfhX2A4n',
          consumer_secret='88uYcFAUlWYfepF7268w5aR9pRsuX9RAfQOHKCsEdUTX710Rce',
          access_token_key='489158548-3PM1kj018S5LkJUh9FKEvaCZrqmQI6g55ABJbI4C',
-         access_token_secret='p3Sy6wJPTAG3ooNFPxBID3XCoHloSLxw7KGLS6itHd1oV')
+         access_token_secret='p3Sy6wJPTAG3ooNFPxBID3XCoHloSLxw7KGLS6itHd1oV'
+         )
         self._shitpost_id = 4462881555
+        self._pesel_id = 3254628247
+        self._hydra_id = 2434906866
 
     def _check_length(self):
         if len(self.message.content) > MAX_STR_SIZE:
@@ -35,6 +40,16 @@ class MessageHandler(object):
         tmp_message_content = tmp_message_content.replace("+", "%2B")
 
         return tmp_message_content
+
+    async def _post_random_pic(self, response_string):
+        random_pic = random.choice(self.statuses)
+
+        response_string = response_string.format(
+                                random_pic.media[0].media_url_https
+                                )
+
+        await self.client.send_message(self.message.channel,
+                                       response_string)
 
     async def _post_tmp(self):
         self.tmp_message = await self.client.send_message(
@@ -48,6 +63,18 @@ class MessageHandler(object):
 
         return tmp_type
 
+    async def _get_twitter_status_list(self, twitter_id):
+        try:
+            self.statuses = self._twitter.GetUserTimeline(twitter_id,
+                                                          count=200)
+        except twitter.error.TwitterError:
+            await self.client.send_message(
+                                self.message.channel,
+                                "Twitter is too busy for shitposting, mate."
+                                )
+            raise RuntimeError("Twitter doesn't respond properly.")
+
+
     async def _check_rolz_connection(self):
         if self.payload == 'Error! Rolz wont bloody respond!':
             await self.client.edit_message(self.tmp_message, self.payload)
@@ -55,30 +82,20 @@ class MessageHandler(object):
 
     async def _check_roll_validity(self):
         if not isinstance(self.payload['result'], int):
-            response_string = '''
-            Please, use valid rolz codes.
-            You can find info on roll formats here:
-            https://rolz.org/wiki/page?w=help&n=BasicCodes
-            '''
+            response_string = format_responses.invalid_roll_string
             await self.client.edit_message(self.tmp_message, response_string)
             raise ValueError('Roll is invalid')
 
     async def _check_rolls_validity(self):
         for roll in self.payload:
             if not isinstance(roll['result'], int):
-                response_string = '''
-                Please, use valid rolz codes.
-                You can find info on roll formats here:
-                https://rolz.org/wiki/page?w=help&n=BasicCodes
-                '''
+                response_string = format_responses.invalid_roll_string
                 await self.client.edit_message(self.tmp_message,
                                                response_string)
                 raise ValueError('Roll is invalid')
 
     async def _weird_characters_response(self):
-        response_string = '''
-        Enough with the weird characters, you ponce!
-        '''
+        response_string = format_responses.weird_characters_string
 
         await self.client.edit_message(self.tmp_message, response_string)
         raise ValueError('Weird characters encountered.')
@@ -133,16 +150,18 @@ class MessageHandler(object):
     async def post_message(self):
         if self._type == 'roll':
             dice_amount = self.message.content[8]
-            print(dice_amount)
             if dice_amount.isdigit() and int(dice_amount) == 1:
-                response_string = '''
-                    Roll Result: {}
-                '''.format(self.payload['result'])
-            else:                
-                response_string = '''
-                Roll Result: {}
-                Roll Details: {}
-                '''.format(self.payload['result'], self.payload['details'])
+                pre_format_string = format_responses.roll_one_string
+                response_string = pre_format_string.format(
+                                        self.payload['result']
+                                        )
+            else:
+                pre_format_string = format_responses.roll_many_string
+                print(self.payload['result'])
+                response_string = pre_format_string.format(
+                                        self.payload['result'],
+                                        self.payload['details']
+                                        )
 
             await self.client.edit_message(self.tmp_message, response_string)
 
@@ -150,13 +169,13 @@ class MessageHandler(object):
             response_string = '''
             Repeat rolls are now in.
             '''
-            results = 'Results are: | '
+            results = 'Results are: ** | '
             details = 'Here are some details: '
             for roll in self.payload:
                 results += str(roll['result']) + ' | '
                 details += ('Roll Number: ' + str(self.payload.index(roll)+1)
                             + roll['details'])
-
+            results += '**'
             await self.client.edit_message(self.tmp_message, response_string)
             await self.client.send_message(self.message.channel, results)
             await self.client.send_message(self.message.channel, details)
@@ -165,7 +184,7 @@ class MessageHandler(object):
             response_string = '''
             Sum rolls are now in.
             '''
-            summ = 'Sum result is: '
+            summ = 'Sum result is: ```'
             details = 'Here are some details: '
             sum_number = 0
 
@@ -174,64 +193,42 @@ class MessageHandler(object):
                 details += ('Roll Number: ' + str(self.payload.index(roll)+1)
                             + roll['details'])
 
-            summ += str(sum_number)
+            summ += str(sum_number) + '```'
 
             await self.client.edit_message(self.tmp_message, response_string)
             await self.client.send_message(self.message.channel, summ)
             await self.client.send_message(self.message.channel, details)
 
         elif self._type == 'choose':
-            response_string = '''
-            I choose {}!
-            '''.format(self.payload['result'])
-
-            await self.client.edit_message(self.tmp_message, response_string)
+            pre_format_string = format_responses.choose_string
+            response_string = pre_format_string.format(self.payload['result'])
+            await self.client.send_message(self.message.channel, 
+                                           response_string)
 
         elif self._type == 'help':
-            response_string = '''
-            This bot proxies your rolls to rolz.org.
-            Syntax info can be found here:
-            https://rolz.org/wiki/page?w=help&n=BasicCodes
-            To roll you use !roll. Example:
-            !roll 6d6
-            It can use multiple rolls with !sum and !repeat. Example:
-            !sum 5 1d6
-            !repeat 5 1d6
-            It can also use choose. Example:
-            !choose Love, Marry, Kill
-            '''
-
-            await self.client.edit_message(self.tmp_message, response_string)
+            response_string = format_responses.help_string
+            await self.client.send_message(self.message.channel, 
+                                           response_string)
 
         elif self._type == 'vibe':
-            response_string = '''
-            Vibe away, boyos!
-            https://www.youtube.com/watch?v=QXuIwJfwVf8
-            '''
-
-            await self.client.edit_message(self.tmp_message, response_string)
-        
-        elif self._type == 'shitpost':
-            response_string = '''
-            *flings a shitty picture*
-            {}
-            '''
-
-            try:
-                statuses = self._twitter.GetUserTimeline(self._shitpost_id,
-                                                         count=200)
-            except twitter.error.TwitterError:
-                await self.client.send_message(
-                                  self.message.channel,
-                                  "Twitter is too busy for shitposting, mate."
-                                  )
-                raise RuntimeError("Twitter doesn't respond properly.")
-
-            random_pic = random.choice(statuses)
-
-            response_string = response_string.format(
-                                random_pic.media[0].media_url_https
-                                )
-
-            await self.client.send_message(self.message.channel,
+            response_string = format_responses.vibe_string
+            await self.client.send_message(self.message.channel, 
                                            response_string)
+
+        elif self._type == 'shitpost':
+            response_string = format_responses.shitpost_string
+
+            await self._get_twitter_status_list(self._shitpost_id)
+            await self._post_random_pic(response_string)
+
+        elif self._type == 'pesel':
+            response_string = format_responses.pesel_string
+
+            await self._get_twitter_status_list(self._pesel_id)
+            await self._post_random_pic(response_string)
+
+        elif self._type == 'hydra':
+            response_string = format_responses.hydra_string
+
+            await self._get_twitter_status_list(self._hydra_id)
+            await self._post_random_pic(response_string)
