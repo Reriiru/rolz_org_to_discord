@@ -205,8 +205,7 @@ class MessageHandler(object):
         elif self._type == 'choose':
             pre_format_string = format_responses.choose_string
             response_string = pre_format_string.format(self.payload['result'])
-            await self.client.send_message(self.message.channel, 
-                                           response_string)
+            await self.client.edit_message(self.tmp_message, response_string)
 
         elif self._type == 'halp':
             response_string = format_responses.help_string

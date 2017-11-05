@@ -47,6 +47,6 @@ pesel_string = '''
 '''
 
 hydra_string = '''
-```[MENACING]```
+`Hail Hydra!`
 {}
 '''
