@@ -13,13 +13,8 @@ It can also use choose. Example:
 ```
 '''
 
-roll_one_string = '''
-Roll Result: {}
-'''
-
-roll_many_string = '''
-Roll Result: {}
-Roll Details: {}
+roll_string = '''
+**{}** Roll Result: `{}`, Roll Details: `{}`
 '''
 
 invalid_roll_string = '''

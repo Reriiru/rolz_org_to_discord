@@ -41,6 +41,12 @@ class MessageHandler(object):
 
         return tmp_message_content
 
+    def _unstrip_special_chars(self):
+        tmp_message_content = self.message.content.replace("%20", " ")
+        tmp_message_content = tmp_message_content.replace("%2B", "+")
+
+        return tmp_message_content
+
     async def _post_random_pic(self, response_string):
         random_pic = random.choice(self.statuses)
 
@@ -74,7 +80,6 @@ class MessageHandler(object):
                                 )
             raise RuntimeError("Twitter doesn't respond properly.")
 
-
     async def _check_rolz_connection(self):
         if self.payload == 'Error! Rolz wont bloody respond!':
             await self.client.edit_message(self.tmp_message, self.payload)
@@ -101,7 +106,7 @@ class MessageHandler(object):
         raise ValueError('Weird characters encountered.')
 
     async def fill_payload(self):
-        if self._type == 'roll':
+        if self._type == 'r' or self._type == 'roll':
             await self._post_tmp()
             try:
                 self.payload = await commands.proxy(
@@ -133,8 +138,9 @@ class MessageHandler(object):
 
         elif self._type == 'choose':
             await self._post_tmp()
-            variants = self.message.content.split(',%20')
-            variants[0] = variants[0].split('%20')[1]
+            self.message.content = self._unstrip_special_chars()
+            variants = self.message.content.split(', ')
+            variants[0] = str.join(' ', variants[0].split(' ')[1:])
 
             roll_string = '1d' + str(len(variants))
 
@@ -148,33 +154,28 @@ class MessageHandler(object):
             await self._check_rolz_connection()
 
     async def post_message(self):
-        if self._type == 'roll':
-            dice_amount = self.message.content[8]
-            if dice_amount.isdigit() and int(dice_amount) == 1:
-                pre_format_string = format_responses.roll_one_string
-                response_string = pre_format_string.format(
-                                        self.payload['result']
-                                        )
-            else:
-                pre_format_string = format_responses.roll_many_string
-                print(self.payload['result'])
-                response_string = pre_format_string.format(
-                                        self.payload['result'],
-                                        self.payload['details']
-                                        )
+        if self._type == 'r' or self._type == 'roll':
+            pre_format_string = format_responses.roll_string
+            response_string = pre_format_string.format(
+                                self.message.author.display_name.split('#')[0],
+                                self.payload['result'],
+                                self.payload['details']
+                                )
 
             await self.client.edit_message(self.tmp_message, response_string)
 
         elif self._type == 'repeat':
             response_string = '''
-            Repeat rolls are now in.
-            '''
+            Repeat rolls are now in for: **{}**
+            '''.format(self.message.author.display_name.split('#')[0])
+
             results = 'Results are: ** | '
-            details = 'Here are some details: '
+            details = 'Here are some details: \n'
             for roll in self.payload:
                 results += str(roll['result']) + ' | '
-                details += ('Roll Number: ' + str(self.payload.index(roll)+1)
-                            + roll['details'])
+                details += ('Roll Number: ' + ' `' +
+                            str(self.payload.index(roll)+1) + ' |' +
+                            roll['details'] + '`')
             results += '**'
             await self.client.edit_message(self.tmp_message, response_string)
             await self.client.send_message(self.message.channel, results)
@@ -182,18 +183,19 @@ class MessageHandler(object):
 
         elif self._type == 'sum':
             response_string = '''
-            Sum rolls are now in.
-            '''
-            summ = 'Sum result is: ```'
+            Sum rolls are now in for: **{}**
+            '''.format(self.message.author.display_name.split('#')[0])
+            summ = 'Sum result is: `'
             details = 'Here are some details: '
             sum_number = 0
 
             for roll in self.payload:
                 sum_number += roll['result']
-                details += ('Roll Number: ' + str(self.payload.index(roll)+1)
-                            + roll['details'])
+                details += ('Roll Number: ' + ' `' +
+                            str(self.payload.index(roll)+1) + ' |' +
+                            roll['details'] + '`')
 
-            summ += str(sum_number) + '```'
+            summ += str(sum_number) + '`'
 
             await self.client.edit_message(self.tmp_message, response_string)
             await self.client.send_message(self.message.channel, summ)
@@ -205,7 +207,7 @@ class MessageHandler(object):
             await self.client.send_message(self.message.channel, 
                                            response_string)
 
-        elif self._type == 'help':
+        elif self._type == 'halp':
             response_string = format_responses.help_string
             await self.client.send_message(self.message.channel, 
                                            response_string)
