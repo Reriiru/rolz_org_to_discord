@@ -4,7 +4,8 @@ import twitter.error
 import random
 import format_responses
 
-from settings import MAX_STR_SIZE
+from settings import (MAX_STR_SIZE, ACCESS_TOKEN, ACCESS_TOKEN_SECRET,
+                      CONSUMER_KEY, CONSUMER_SECRET)
 
 
 class MessageHandler(object):
@@ -22,10 +23,10 @@ class MessageHandler(object):
 
         self._type = self._check_type()
         self._twitter = twitter.Api(
-         consumer_key='yQaj8jUbjBAOlCjaMUfhX2A4n',
-         consumer_secret='88uYcFAUlWYfepF7268w5aR9pRsuX9RAfQOHKCsEdUTX710Rce',
-         access_token_key='489158548-3PM1kj018S5LkJUh9FKEvaCZrqmQI6g55ABJbI4C',
-         access_token_secret='p3Sy6wJPTAG3ooNFPxBID3XCoHloSLxw7KGLS6itHd1oV'
+         consumer_key=CONSUMER_KEY,
+         consumer_secret=CONSUMER_SECRET,
+         access_token_key=ACCESS_TOKEN,
+         access_token_secret=ACCESS_TOKEN_SECRET
          )
         self._shitpost_id = 4462881555
         self._pesel_id = 3254628247

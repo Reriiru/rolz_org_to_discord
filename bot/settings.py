@@ -1,3 +1,8 @@
+CONSUMER_KEY = ""
+CONSUMER_SECRET = ""
+ACCESS_TOKEN = ""
+ACCESS_TOKEN_SECRET = ""
+
 TOKEN = ""
 MAX_STR_SIZE = 255
 ROLZ_URL = "https://rolz.org/api/?"
