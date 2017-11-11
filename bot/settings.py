@@ -1,14 +1,9 @@
 import os
 
-ENV = 'prod'
+ENV = 'dev'
 
 if ENV == 'dev':
-    CONSUMER_KEY = ""
-    CONSUMER_SECRET = ""
-    ACCESS_TOKEN = ""
-    ACCESS_TOKEN_SECRET = ""
-
-    BOT_TOKEN = ""
+    pass
 
 if ENV == 'prod':
     CONSUMER_KEY = os.environ['CONSUMER_KEY']

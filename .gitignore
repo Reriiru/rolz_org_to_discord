@@ -7,3 +7,6 @@ venv
 # Cache
 bot/__pycache__
 .cache
+
+# Keys
+.keys

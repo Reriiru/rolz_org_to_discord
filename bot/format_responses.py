@@ -55,6 +55,11 @@ hydra_string = '''
 {}
 '''
 
+neko_string = '''
+*shamelesly ripping off features*
+{}
+'''
+
 message_too_long_string = '''
 Stop trying to put something this large up discord's arse.
 '''

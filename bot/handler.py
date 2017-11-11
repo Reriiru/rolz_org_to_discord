@@ -29,9 +29,11 @@ class MessageHandler(object):
          access_token_key=ACCESS_TOKEN,
          access_token_secret=ACCESS_TOKEN_SECRET
          )
+        
         self._shitpost_id = 4462881555
         self._pesel_id = 3254628247
         self._hydra_id = 2434906866
+        self._neko_id = 2837539873
 
     def _check_length(self):
         if len(self.message.content) > MAX_STR_SIZE:
@@ -260,4 +262,10 @@ class MessageHandler(object):
             response_string = format_responses.hydra_string
 
             await self._get_twitter_status_list(self._hydra_id)
+            await self._post_random_pic(response_string)
+        
+        elif self._type == 'neko':
+            response_string = format_responses.neko_string
+
+            await self._get_twitter_status_list(self._neko_id)
             await self._post_random_pic(response_string)
