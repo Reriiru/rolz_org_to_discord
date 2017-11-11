@@ -46,7 +46,15 @@ pesel_string = '''
 {}
 '''
 
+response_error_string = '''
+Error! Rolz wont bloody respond!
+'''
+
 hydra_string = '''
 `Hail Hydra!`
 {}
+'''
+
+message_too_long_string = '''
+Stop trying to put something this large up discord's arse.
 '''

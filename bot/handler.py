@@ -3,6 +3,7 @@ import twitter
 import twitter.error
 import random
 import format_responses
+import discord.errors
 
 from settings import (MAX_STR_SIZE, ACCESS_TOKEN, ACCESS_TOKEN_SECRET,
                       CONSUMER_KEY, CONSUMER_SECRET)
@@ -83,8 +84,16 @@ class MessageHandler(object):
 
     async def _check_rolz_connection(self):
         if self.payload == 'Error! Rolz wont bloody respond!':
-            await self.client.edit_message(self.tmp_message, self.payload)
+            response_string = format_responses.response_error_string
+            await self.client.edit_message(self.tmp_message,
+                                           response_string)
             raise ValueError('Rolz is unavailable')
+
+        if self.payload == 'Can not serialize JSON. Most likely empty response.':
+            response_string = format_responses.invalid_roll_string
+            await self.client.edit_message(self.tmp_message,
+                                           response_string)
+            raise ValueError('Rolz returned empty JSON')
 
     async def _check_roll_validity(self):
         if not isinstance(self.payload['result'], int):
@@ -163,7 +172,12 @@ class MessageHandler(object):
                                 self.payload['details']
                                 )
 
-            await self.client.edit_message(self.tmp_message, response_string)
+            try:
+                await self.client.edit_message(self.tmp_message, response_string)
+            except discord.errors.HTTPException as error:
+                response_string = format_responses.message_too_long_string
+                await self.client.edit_message(self.tmp_message, response_string)
+
 
         elif self._type == 'repeat':
             response_string = '''
@@ -178,9 +192,13 @@ class MessageHandler(object):
                             str(self.payload.index(roll)+1) + ' |' +
                             roll['details'] + '`')
             results += '**'
-            await self.client.edit_message(self.tmp_message, response_string)
-            await self.client.send_message(self.message.channel, results)
-            await self.client.send_message(self.message.channel, details)
+            try:
+                await self.client.edit_message(self.tmp_message, response_string)
+                await self.client.send_message(self.message.channel, results)
+                await self.client.send_message(self.message.channel, details)
+            except discord.errors.HTTPException as error:
+                response_string = format_responses.message_too_long_string
+                await self.client.edit_message(self.tmp_message, response_string)
 
         elif self._type == 'sum':
             response_string = '''
@@ -198,14 +216,23 @@ class MessageHandler(object):
 
             summ += str(sum_number) + '`'
 
-            await self.client.edit_message(self.tmp_message, response_string)
-            await self.client.send_message(self.message.channel, summ)
-            await self.client.send_message(self.message.channel, details)
+            try:
+                await self.client.edit_message(self.tmp_message, response_string)
+                await self.client.send_message(self.message.channel, summ)
+                await self.client.send_message(self.message.channel, details)
+            except discord.errors.HTTPException as error:
+                response_string = format_responses.message_too_long_string
+                await self.client.edit_message(self.tmp_message, response_string)
+                
 
         elif self._type == 'choose':
             pre_format_string = format_responses.choose_string
             response_string = pre_format_string.format(self.payload['result'])
-            await self.client.edit_message(self.tmp_message, response_string)
+            try:
+                await self.client.edit_message(self.tmp_message, response_string)
+            except discord.errors.HTTPException as error:
+                response_string = format_responses.message_too_long_string
+                await self.client.edit_message(self.tmp_message, response_string)
 
         elif self._type == 'halp':
             response_string = format_responses.help_string

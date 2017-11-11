@@ -17,5 +17,9 @@ async def proxy(content):
     except urllib.error.HTTPError as error:
         return 'Error! Rolz wont bloody respond!'
 
-    payload = json.load(response)
+    try:
+        payload = json.load(response)
+    except json.decoder.JSONDecodeError as error:
+        return 'Can not serialize JSON. Most likely empty response.'
+
     return payload

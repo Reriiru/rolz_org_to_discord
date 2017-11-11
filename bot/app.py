@@ -1,7 +1,7 @@
 import discord
 import handler
 
-from settings import (TOKEN)
+from settings import (BOT_TOKEN)
 
 
 client = discord.Client()
@@ -27,4 +27,4 @@ async def on_message(message):
         await message_handler.post_message()
 
 
-client.run(TOKEN)
+client.run(BOT_TOKEN)
