@@ -63,3 +63,26 @@ neko_string = '''
 message_too_long_string = '''
 Stop trying to put something this large up discord's arse.
 '''
+
+repeat_string = '''
+Repeat rolls are now in for: **{}**
+'''
+
+repeat_results_string = '''
+Results are: ** |'''
+
+repeat_details_string = '''
+Here are some details:
+'''
+
+sum_string =  '''
+Sum rolls are now in for: **{}**
+'''
+
+sum_results_string = '''
+Sum result is: `{}`
+'''
+
+sum_details_string = '''
+Here are some details:
+'''
