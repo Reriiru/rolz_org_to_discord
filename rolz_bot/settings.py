@@ -14,5 +14,6 @@ if ENV == 'prod':
     BOT_TOKEN = os.environ['BOT_TOKEN']
 
 
+STARTUP = ['extensions.rolz', 'extensions.twitter']
 MAX_STR_SIZE = 255
 ROLZ_URL = "https://rolz.org/api/?"
