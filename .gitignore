@@ -5,7 +5,7 @@ venv
 .vscode
 
 # Cache
-bot/__pycache__
+__pycache__
 .cache
 
 # Keys
