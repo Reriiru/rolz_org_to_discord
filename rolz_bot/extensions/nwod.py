@@ -12,11 +12,8 @@ class Nwod(Roller):
         while True:
             actuall_results = result['details'].split(u"\u2192")[0]
             exploded_dice = 0
-            print("Result!", result)
             actuall_results = actuall_results.replace(actuall_results[:4], '')
-            print("Result!", actuall_results)
             for s in actuall_results.split(', '):
-                print(s)
                 if int(s) >= number:
                     exploded_dice += 1
             
@@ -25,7 +22,6 @@ class Nwod(Roller):
 
             dice_query = str(exploded_dice) + 'd10e8'
 
-            print(dice_query)
             result = await self._roll_dice(dice_query)
             
             final_result['result'] += result['result']
@@ -42,7 +38,6 @@ class Nwod(Roller):
             result = await self._roll_dice(roll_query)
             failed_query = int(roll_query.split('d')[0]) - int(result['result'])
             failed_query = str(failed_query) + 'd10e8'
-            print("Failde query", failed_query)
             failed_result = await self._roll_dice(failed_query)
 
             if dice_query.find('e') != -1:
@@ -66,11 +61,8 @@ class Nwod(Roller):
                                        int(dice_query[dice_query.find('e')+1]),
                                        result)
             else:
-                print("got to exploded")
                 exploded = await self._exploded(10, result)
-            print(result)
             result['result'] += exploded['result']
-            print(result)
             result['details'] += ' ' + exploded['details']
         
 
@@ -80,7 +72,7 @@ class Nwod(Roller):
                                                 result['result'],
                                                 result['details']
                                                 )
-        print(response_string)
+
         
         try:
             await self.bot.say(response_string)
