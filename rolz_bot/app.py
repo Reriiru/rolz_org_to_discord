@@ -1,3 +1,4 @@
+import rolz.format_responses as format_responses
 from settings import (BOT_TOKEN, STARTUP)
 from discord.ext import commands
 
@@ -11,6 +12,10 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+
+@bot.command(name='halp')
+async def repeat():
+    await bot.say(format_responses.help_string)
 
 if __name__ == "__main__":
     for extension in STARTUP:
