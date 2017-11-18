@@ -4,7 +4,6 @@ ENV = 'prod'
 
 if ENV == 'dev':
     pass
-
 if ENV == 'prod':
     CONSUMER_KEY = os.environ['CONSUMER_KEY']
     CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
@@ -14,6 +13,7 @@ if ENV == 'prod':
     BOT_TOKEN = os.environ['BOT_TOKEN']
 
 
-STARTUP = ['extensions.rolz', 'extensions.twitter']
+STARTUP = ['extensions.rolz', 'extensions.twitter', 'extensions.choose', 
+           'extensions.nwod', 'extensions.tarot']
 MAX_STR_SIZE = 255
 ROLZ_URL = "https://rolz.org/api/?"
