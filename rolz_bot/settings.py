@@ -10,6 +10,8 @@ if ENV == 'prod':
     ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
     ACCESS_TOKEN_SECRET = os.environ['ACCESS_TOKEN_SECRET']
 
+    IMGUR_CLIENT = os.environ['IMGUR_CLIENT']
+    IMGUR_SECRET = os.environ['IMGUR_SECRET']
     BOT_TOKEN = os.environ['BOT_TOKEN']
 
 
