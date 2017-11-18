@@ -113,7 +113,7 @@ class Rolz(object):
             await self.bot.say(details_string)
         except discord.errors.HTTPException as error:
             response_string = format_responses.message_too_long_string
-            await self.client.edit_message(self.tmp_message, response_string)
+            await self.bot.say(response_string)
         
     @commands.command(pass_context=True, name='sum')
     async def sum(self, ctx, repeats : int, *dice : str):
@@ -149,7 +149,7 @@ class Rolz(object):
             await self.bot.say(details_string)
         except discord.errors.HTTPException as error:
             response_string = format_responses.message_too_long_string
-            await self.client.edit_message(self.tmp_message, response_string)
+            await self.bot.say(response_string)
     
     @commands.command(name='choose')
     async def choose(self, *variants : str):
