@@ -11,8 +11,7 @@ from rolz_bot.roller import Roller
 class Rolz(Roller):
     '''Frontend for the rolz proxy.'''    
 
-    @commands.command(pass_context=True, name='roll')
-    async def roll(self, ctx, *dice : str):
+     async def _roll(self, ctx, dice):
         dice_query = "".join(dice)
         dice_query = quote(dice_query, safe='')
 
@@ -30,28 +29,21 @@ class Rolz(Roller):
         except discord.errors.HTTPException:
             response_string = format_responses.message_too_long_string
             await self.bot.say(response_string)
+
+    @commands.command(pass_context=True, name='roll')
+    async def _roll(self, ctx, *dice : str):
+        '''Gives you a roll, according to Rolz.org syntax'''
+        await self._roll(ctx, dice)
+   
     
     @commands.command(pass_context=True, name='r')
-    async def roll_r(self, ctx, *dice : str):
-        dice_query = "".join(dice)
-        dice_query = quote(dice_query, safe='')
-
-        result = await self._roll_dice(dice_query)
-        pre_format_string = format_responses.roll_string
-        response_string = pre_format_string.format(
-                            ctx.message.author.display_name,
-                            result['result'],
-                            result['details']
-                            )
-
-        try:
-            await self.bot.say(response_string)
-        except discord.errors.HTTPException:
-            response_string = format_responses.message_too_long_string
-            await self.bot.say(response_string)
+    async def _roll(self, ctx, *dice : str):
+        '''Same as roll, but shorter'''
+        await self._roll(ctx, dice)
     
     @commands.command(pass_context=True, name='repeat')
-    async def repeat(self, ctx, repeats : int, *dice : str):           
+    async def repeat(self, ctx, repeats : int, *dice : str):
+        '''Syntax is !repeat X `roll_query`, rolls multiple time.'''           
         full_result = []
 
         dice_query = "".join(dice)
@@ -87,6 +79,8 @@ class Rolz(Roller):
         
     @commands.command(pass_context=True, name='sum')
     async def sum(self, ctx, repeats : int, *dice : str):
+    '''Syntax is !sum X `roll_query`, rolls multiple time. 
+    Summs up the results.'''   
         full_result = []
 
         dice_query = "".join(dice)

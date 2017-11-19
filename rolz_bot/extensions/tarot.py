@@ -16,6 +16,7 @@ class Tarot(Roller):
         self.tarot_album = self.imgur_client.get_album_images('5TzBe')
 
     @commands.command(pass_context=True, name='tarot')
+    '''Posts a randomized tarot card.'''
     async def tarot(self, ctx):
         dice_query = '1d156'
         number = await self._roll_dice(dice_query)
