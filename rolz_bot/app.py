@@ -15,6 +15,9 @@ async def on_ready():
 
 @bot.command(name='halp')
 async def repeat():
+    '''
+    Slightly more detailed version of !help.
+    '''
     await bot.say(format_responses.help_string)
 
 if __name__ == "__main__":
