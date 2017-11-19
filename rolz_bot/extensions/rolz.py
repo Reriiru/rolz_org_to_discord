@@ -11,7 +11,7 @@ from rolz_bot.roller import Roller
 class Rolz(Roller):
     '''Frontend for the rolz proxy.'''    
 
-     async def _roll(self, ctx, dice):
+    async def _roll(self, ctx, dice):
         dice_query = "".join(dice)
         dice_query = quote(dice_query, safe='')
 
@@ -79,8 +79,10 @@ class Rolz(Roller):
         
     @commands.command(pass_context=True, name='sum')
     async def sum(self, ctx, repeats : int, *dice : str):
-    '''Syntax is !sum X `roll_query`, rolls multiple time. 
-    Summs up the results.'''   
+        '''
+        Syntax is !sum X `roll_query`, rolls multiple time.
+        Summs up the results.
+        '''   
         full_result = []
 
         dice_query = "".join(dice)

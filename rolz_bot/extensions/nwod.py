@@ -82,14 +82,7 @@ class Nwod(Roller):
 
     @commands.command(pass_context=True, name='nwod')
     async def nwod(self, ctx, *dice : str):
-        '''Specific format for success based dice for cofd and nwod.
-Here is how you use it:
-!nwod 10 -- this roll 10 nwod dice.
-!nwod r10 -- this rolls 10 nwod rote dice.
-!nwod 10e8 -- this rolls 10 nwod dice with every 8 exploding.
-
-Those can be combined, for example:
-!nwod r10e8 -- will roll 10 nwod rote dice that explode on 8.'''
+        '''Specific format for success based dice for cofd and nwod.'''
         await self._nwod(ctx, dice)
 
     @commands.command(pass_context=True, name='n')

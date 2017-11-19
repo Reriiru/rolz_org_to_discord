@@ -11,6 +11,7 @@ from rolz_bot.roller import Roller
 class Choose(Roller):    
     @commands.command(name='choose')
     async def choose(self, *variants : str):
+        '''Picks between your variants.'''
         return_variants = ' '.join(variants)
         return_variants = return_variants.split(',')
 
