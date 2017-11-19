@@ -1,6 +1,6 @@
 import os
 
-ENV = 'prod'
+ENV = 'dev'
 
 if ENV == 'dev':
     pass

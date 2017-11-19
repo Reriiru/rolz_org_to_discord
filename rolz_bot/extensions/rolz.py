@@ -11,7 +11,7 @@ from rolz_bot.roller import Roller
 class Rolz(Roller):
     '''Frontend for the rolz proxy.'''    
 
-     async def _roll(self, ctx, dice):
+    async def _roll(self, ctx, dice):
         dice_query = "".join(dice)
         dice_query = quote(dice_query, safe='')
 
@@ -31,13 +31,13 @@ class Rolz(Roller):
             await self.bot.say(response_string)
 
     @commands.command(pass_context=True, name='roll')
-    async def _roll(self, ctx, *dice : str):
+    async def roll(self, ctx, *dice : str):
         '''Gives you a roll, according to Rolz.org syntax'''
         await self._roll(ctx, dice)
    
     
     @commands.command(pass_context=True, name='r')
-    async def _roll(self, ctx, *dice : str):
+    async def r(self, ctx, *dice : str):
         '''Same as roll, but shorter'''
         await self._roll(ctx, dice)
     
@@ -79,8 +79,10 @@ class Rolz(Roller):
         
     @commands.command(pass_context=True, name='sum')
     async def sum(self, ctx, repeats : int, *dice : str):
-    '''Syntax is !sum X `roll_query`, rolls multiple time. 
-    Summs up the results.'''   
+        '''
+        Syntax is !sum X `roll_query`, rolls multiple time. 
+        Summs up the results.
+        '''   
         full_result = []
 
         dice_query = "".join(dice)
