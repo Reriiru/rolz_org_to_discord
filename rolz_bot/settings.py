@@ -17,5 +17,6 @@ if ENV == 'prod':
 
 STARTUP = ['extensions.rolz', 'extensions.twitter', 'extensions.choose', 
            'extensions.nwod', 'extensions.tarot']
+DATABASE_STRING = 'sqlite:///bot.db'
 MAX_STR_SIZE = 255
 ROLZ_URL = "https://rolz.org/api/?"
