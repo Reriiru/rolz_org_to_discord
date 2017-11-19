@@ -1,4 +1,4 @@
-import rolz.format_responses as format_responses
+import rolz_bot.format_responses as format_responses
 from settings import (BOT_TOKEN, STARTUP)
 from discord.ext import commands
 
