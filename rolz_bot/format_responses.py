@@ -87,7 +87,7 @@ repeat_details_string = '''
 Here are some details:
 '''
 
-sum_string =  '''
+sum_string = '''
 Sum rolls are now in for: **{}**
 '''
 
@@ -99,13 +99,58 @@ sum_details_string = '''
 Here are some details:
 '''
 
-nwod_response = '''
+nwod_string = '''
 Nwod roll results are in for **{}**:
 Result: `{}`
 Details: `{}`
 '''
 
-tarot_response = '''
+tarot_string = '''
 Tarot is in for **{}**:
 {}
+'''
+
+invalid_value_string = '''
+Macro value is invalid! Perhaps it's too long.
+'''
+
+value_added_string = '''
+Macro value **{}** was succesfully added for user **{}**.
+'''
+
+value_search_error_string = '''
+Something went wrong during search!
+'''
+
+value_nothing_found_string = '''
+No such value exists!
+'''
+
+value_search_string = '''
+Value **{}** for **{}**:
+'''
+
+value_update_string = '''
+Value **{}** for **{}** updated.
+'''
+
+value_list_string = '''
+List of values for **{}**:
+{}
+'''
+
+value_list_empty_string = '''
+Empty list of values for **{}**.
+'''
+
+value_delete_none_string = '''
+No value to delete!
+'''
+
+value_delete_fail_string = '''
+Error occured during delete. Sorry!
+'''
+
+value_delete_string = '''
+Value **{}** for **{}** deleted.
 '''

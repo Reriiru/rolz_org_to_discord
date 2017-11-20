@@ -2,8 +2,6 @@ import rolz_bot.format_responses as format_responses
 
 from settings import (BOT_TOKEN, STARTUP)
 from discord.ext import commands
-from rolz_bot.models import macro
-from rolz_bot.database import engine
 
 bot = commands.Bot(command_prefix='!')
 
@@ -14,6 +12,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+
 
 @bot.command(name='halp')
 async def halp():
@@ -27,7 +26,4 @@ if __name__ == "__main__":
         except Exception as e:
             exc = '{}: {}'.format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
-    macro.Base.metadata.create_all(engine)
     bot.run(BOT_TOKEN)
-
-
