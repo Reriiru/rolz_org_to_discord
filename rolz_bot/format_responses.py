@@ -23,16 +23,16 @@ Those can be combined, for example:
 There is a tarot feature, that will give you a randomized tarot card:
 !tarot
 
-There is a value feature, that will store user specified value or macro.
-You also can use already stored values. Limited by 1000 symbols.
+There is a value feature, that will store user specified value.
+Limited by 1000 symbols.
 To create a value use !value create. Example:
-!value create "Pony" "My horse is amazing"
+!value create "Spaceship" "Its a space walrus!"
 To show a value use !value show. Example:
-!value show Pony -- this will print you the value of Pony as defined earlier.
+!value show "Spaceship" -- this will print you the value of Spaceship as defined earlier.
 To show a list of defined values use !value list. Example:
 !value list -- this will print you a list of your values.
 To delete a defined value use !value delete "NAME". Example:
-!value delete "Pony"
+!value delete "Spaceship"
 ```
 '''
 
