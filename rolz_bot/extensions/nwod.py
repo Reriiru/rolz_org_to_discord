@@ -1,10 +1,9 @@
 import discord
 import rolz_bot.format_responses as format_responses
-import json
-import urllib.error
 
 from discord.ext import commands
 from rolz_bot.roller import Roller
+
 
 class Nwod(Roller):
     async def _exploded(self, number, result):
@@ -16,17 +15,17 @@ class Nwod(Roller):
             for s in actuall_results.split(', '):
                 if int(s) >= number:
                     exploded_dice += 1
-            
+
             if exploded_dice == 0:
                 break
 
             dice_query = str(exploded_dice) + 'd10e8'
 
             result = await self._roll_dice(dice_query)
-            
+
             final_result['result'] += result['result']
             final_result['details'] += ' ' + result['details']
-        
+
         return final_result
 
     async def _nwod(self, ctx, dice):
@@ -36,7 +35,8 @@ class Nwod(Roller):
             dice_query = dice_query.replace('r', '')
             roll_query = dice_query.split('e')[0] + 'd10e8'
             result = await self._roll_dice(roll_query)
-            failed_query = int(roll_query.split('d')[0]) - int(result['result'])
+            failed_query = (int(roll_query.split('d')[0]) -
+                            int(result['result']))
             failed_query = str(failed_query) + 'd10e8'
             failed_result = await self._roll_dice(failed_query)
 
@@ -48,9 +48,9 @@ class Nwod(Roller):
                 exploded = await self._exploded(10, result)
 
             result['result'] += failed_result['result'] + exploded['result']
-            
-            result['details'] += (' ' + failed_result['details'] + 
-                                        exploded['details'])
+
+            result['details'] += (' ' + failed_result['details'] +
+                                  exploded['details'])
 
         else:
             roll_query = dice_query.split('e')[0] + 'd10e8'
@@ -64,16 +64,14 @@ class Nwod(Roller):
                 exploded = await self._exploded(10, result)
             result['result'] += exploded['result']
             result['details'] += ' ' + exploded['details']
-        
 
-        response_string = format_responses.nwod_response
+        response_string = format_responses.nwod_string
         response_string = response_string.format(
                                 ctx.message.author.display_name,
-                                                result['result'],
-                                                result['details']
-                                                )
+                                result['result'],
+                                result['details']
+                                )
 
-        
         try:
             await self.bot.say(response_string)
         except discord.errors.HTTPException:
@@ -81,19 +79,12 @@ class Nwod(Roller):
             await self.bot.say(response_string)
 
     @commands.command(pass_context=True, name='nwod')
-    async def nwod(self, ctx, *dice : str):
-        '''Specific format for success based dice for cofd and nwod.
-Here is how you use it:
-!nwod 10 -- this roll 10 nwod dice.
-!nwod r10 -- this rolls 10 nwod rote dice.
-!nwod 10e8 -- this rolls 10 nwod dice with every 8 exploding.
-
-Those can be combined, for example:
-!nwod r10e8 -- will roll 10 nwod rote dice that explode on 8.'''
+    async def nwod(self, ctx, *dice: str):
+        '''Specific format for success based dice for cofd and nwod.'''
         await self._nwod(ctx, dice)
 
     @commands.command(pass_context=True, name='n')
-    async def n(self, ctx, *dice : str):
+    async def n(self, ctx, *dice: str):
         '''Same as nwod, but shorter.'''
         await self._nwod(ctx, dice)
 

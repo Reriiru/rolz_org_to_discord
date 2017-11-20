@@ -1,7 +1,7 @@
 import rolz_bot.format_responses as format_responses
+
 from settings import (BOT_TOKEN, STARTUP)
 from discord.ext import commands
-
 
 bot = commands.Bot(command_prefix='!')
 
@@ -13,11 +13,10 @@ async def on_ready():
     print(bot.user.id)
     print('------')
 
+
 @bot.command(name='halp')
-async def repeat():
-    '''
-    Slightly more detailed version of !help.
-    '''
+async def halp():
+    '''Slightly more detailed help.'''
     await bot.say(format_responses.help_string)
 
 if __name__ == "__main__":
@@ -27,7 +26,4 @@ if __name__ == "__main__":
         except Exception as e:
             exc = '{}: {}'.format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
-    
     bot.run(BOT_TOKEN)
-
-
