@@ -164,7 +164,7 @@ class Value(Roller):
         elif args[0] == 'list':
             await self._macro_value_list(ctx)
         elif args[0] == 'delete':
-            await self._macro_value_delete(ctx, args[0])
+            await self._macro_value_delete(ctx, args[1])
 
 
 def setup(bot):
