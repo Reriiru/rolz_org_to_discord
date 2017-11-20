@@ -1,7 +1,5 @@
 import discord
 import rolz_bot.format_responses as format_responses
-import json
-import urllib.error
 
 from urllib.parse import quote
 from discord.ext import commands
@@ -9,7 +7,7 @@ from rolz_bot.roller import Roller
 
 
 class Rolz(Roller):
-    '''Frontend for the rolz proxy.'''    
+    '''Frontend for the rolz proxy.'''
 
     async def _roll(self, ctx, dice):
         dice_query = "".join(dice)
@@ -31,19 +29,18 @@ class Rolz(Roller):
             await self.bot.say(response_string)
 
     @commands.command(pass_context=True, name='roll')
-    async def roll(self, ctx, *dice : str):
+    async def roll(self, ctx, *dice: str):
         '''Gives you a roll, according to Rolz.org syntax'''
         await self._roll(ctx, dice)
-   
-    
+
     @commands.command(pass_context=True, name='r')
-    async def r(self, ctx, *dice : str):
+    async def r(self, ctx, *dice: str):
         '''Same as roll, but shorter'''
         await self._roll(ctx, dice)
-    
+
     @commands.command(pass_context=True, name='repeat')
-    async def repeat(self, ctx, repeats : int, *dice : str):
-        '''Syntax is !repeat X `roll_query`, rolls multiple time.'''           
+    async def repeat(self, ctx, repeats: int, *dice: str):
+        '''Syntax is !repeat X `roll_query`, rolls multiple time.'''
         full_result = []
 
         dice_query = "".join(dice)
@@ -52,8 +49,7 @@ class Rolz(Roller):
         for index in range(repeats):
             single_result = await self._roll_dice(dice_query)
             full_result.append(single_result)
-        
-        
+
         name_string = format_responses.repeat_string.format(
                                         ctx.message.author.display_name
                                         )
@@ -64,9 +60,9 @@ class Rolz(Roller):
         for roll in full_result:
             result_string += str(roll['result']) + ' | '
             details_string += ('Roll Number: ' + ' `' +
-                        str(full_result.index(roll)+1) + ' |' +
-                        roll['details'] + '`')
-        
+                               str(full_result.index(roll)+1) + ' |' +
+                               roll['details'] + '`')
+
         result_string += '**'
 
         try:
@@ -76,13 +72,13 @@ class Rolz(Roller):
         except discord.errors.HTTPException as error:
             response_string = format_responses.message_too_long_string
             await self.bot.say(response_string)
-        
+
     @commands.command(pass_context=True, name='sum')
-    async def sum(self, ctx, repeats : int, *dice : str):
+    async def sum(self, ctx, repeats: int, *dice: str):
         '''
-        Syntax is !sum X `roll_query`, rolls multiple time. 
+        Syntax is !sum X `roll_query`, rolls multiple time.
         Summs up the results.
-        '''   
+        '''
         full_result = []
 
         dice_query = "".join(dice)
@@ -104,9 +100,9 @@ class Rolz(Roller):
         for roll in full_result:
             sum_result += roll['result']
             details_string += ('Roll Number: ' + ' `' +
-                        str(full_result.index(roll)+1) + ' |' +
-                        roll['details'] + '`')
-        
+                               str(full_result.index(roll)+1) + ' |' +
+                               roll['details'] + '`')
+
         result_string = result_string.format(str(sum_result))
 
         try:
