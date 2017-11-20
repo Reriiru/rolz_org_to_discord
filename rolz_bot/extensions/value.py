@@ -44,6 +44,7 @@ class Value(Roller):
         if self.value_validator.validate(to_add) is False:
             response_string = format_responses.invalid_value_string
             await self.bot.say(response_string)
+            raise ValueError("Value is too big")
 
         unique_check = self.values.find_one({'user': ctx.message.author.name,
                                              'name': name})
