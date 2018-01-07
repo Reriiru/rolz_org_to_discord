@@ -20,6 +20,9 @@ success based dice for cofd and nwod. Here is how you use it:
 Those can be combined, for example:
 !nwod r10e8 -- will roll 10 nwod rote dice that explode on 8.
 
+Have a look at FFG Warhammer 40K rolls. They work like this:
+!wh 45 -- where 45 is your modified Characteristic score.
+
 There is a tarot feature, that will give you a randomized tarot card:
 !tarot
 
