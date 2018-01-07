@@ -36,7 +36,7 @@ if ENV == 'prod':
     IMGUR_CLIENT = get_secret('imgur_client')
     IMGUR_SECRET = get_secret('imgur_secret')
     BOT_TOKEN = get_secret('discord_bot_token')
-    MONGO_STRING = '//mongo:27017/bot_data'
+    MONGO_STRING = 'mongodb://mongo:27017//bot_data'
 
 
 STARTUP = ['extensions.rolz', 'extensions.twitter', 'extensions.choose',
