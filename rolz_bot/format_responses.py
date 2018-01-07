@@ -26,7 +26,7 @@ There is a tarot feature, that will give you a randomized tarot card:
 There is a value feature, that will store user specified value.
 Limited by 1000 symbols.
 To create a value use !value create. Example:
-!value create "Spaceship" "Its a space walrus!"
+!value add "Spaceship" "Its a space walrus!"
 To show a value use !value show. Example:
 !value show "Spaceship" -- this will print you the value of Spaceship as defined earlier.
 To show a list of defined values use !value list. Example:
