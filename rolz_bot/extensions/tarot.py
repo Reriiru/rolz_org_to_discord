@@ -12,7 +12,7 @@ class Tarot(Roller):
         super().__init__(bot)
         self.imgur_client = ImgurClient(rolz_bot.settings.IMGUR_CLIENT,
                                         rolz_bot.settings.IMGUR_SECRET)
-        self.tarot_album = self.imgur_client.get_album_images('5TzBe')
+        self.tarot_album = self.imgur_client.get_album_images('TLU5N')
 
     @commands.command(pass_context=True, name='tarot')
     async def tarot(self, ctx):
@@ -20,7 +20,6 @@ class Tarot(Roller):
         dice_query = '1d156'
         number = await self._roll_dice(dice_query)
         number = number['result']
-
         response_string = format_responses.tarot_string
         response_string = response_string.format(
                                     ctx.message.author.display_name,

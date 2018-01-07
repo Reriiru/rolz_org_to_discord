@@ -165,3 +165,15 @@ Error occured during delete. Sorry!
 value_delete_string = '''
 Value **{}** for **{}** deleted.
 '''
+
+wh_string_fail = '''
+FFG Warhammer roll is in for **{}**.
+Roll results: `{}`
+Degrees of failure: `{}`
+'''
+
+wh_string_success = '''
+FFG Warhammer roll is in for **{}**.
+Roll results: `{}`
+Degrees of failure: `{}`
+'''
