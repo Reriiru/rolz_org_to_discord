@@ -1,6 +1,6 @@
 FROM alpine:3.6
 
-RUN apk add --no-cache python3 openssl-dev
+RUN apk add --no-cache python3 openssl-dev ca-certificates
 
 ENV PROJECT_DIR /opt/bot
 ENV APP_DIR $PROJECT_DIR/rolz_bot
