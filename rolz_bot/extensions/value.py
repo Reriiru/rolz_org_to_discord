@@ -35,6 +35,7 @@ class Value(Roller):
         self.value_validator = cerberus.Validator(value_schema)
 
     async def _macro_value_add(self, ctx, name, query):
+        '''Creates a new value. Syntax: !value add "NAME" "COMMAND"'''
         to_add = {
             'user': ctx.message.author.name,
             'name': name,
@@ -83,6 +84,7 @@ class Value(Roller):
             await self.bot.say(response_string)
 
     async def _macro_value_show(self, ctx, name):
+        '''Shows a value specified by name. Syntax: !value show "NAME"'''
         search_query = {
             'user': ctx.message.author.name,
             'name': name
@@ -107,6 +109,7 @@ class Value(Roller):
             await self.bot.say(value['value'])
 
     async def _macro_value_list(self, ctx):
+        '''Shows a list of values that user defined.'''
         search_query = {
             'user': ctx.message.author.name
         }
@@ -134,6 +137,7 @@ class Value(Roller):
             await self.bot.say(response_string)
 
     async def _macro_value_delete(self, ctx, name):
+        '''Deletes a value specified by its name. Syntax: !value delete "NAME"'''
         search_query = {
             'user': ctx.message.author.name,
             'name': name
@@ -158,6 +162,7 @@ class Value(Roller):
 
     @commands.command(pass_context=True, name='value')
     async def macro(self, ctx, *args: str):
+        '''Stores a specified value, user unique.'''
         if args[0] == 'add':
             await self._macro_value_add(ctx, args[1], args[2])
         elif args[0] == 'show':
