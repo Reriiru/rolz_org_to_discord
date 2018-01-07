@@ -178,5 +178,5 @@ Degrees of failure: `{}`
 wh_string_success = '''
 FFG Warhammer roll is in for **{}**.
 Roll results: `{}`
-Degrees of failure: `{}`
+Degrees of success: `{}`
 '''
