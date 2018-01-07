@@ -171,8 +171,7 @@ Value **{}** for **{}** deleted.
 
 wh_string_fail = '''
 FFG Warhammer roll is in for **{}**.
-Roll results: `{}`
-Degrees of failure: `{}`
+Roll results: `{}` Degrees of failure: `{}`
 '''
 
 wh_string_success = '''
