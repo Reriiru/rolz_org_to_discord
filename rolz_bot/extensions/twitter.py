@@ -23,7 +23,7 @@ class Twitter(object):
          )
 
         self._shitpost_id = 4462881555
-        self._pesel_id = 3254628247
+        self._pesel_id = 730505014150582272
         self._hydra_id = 2434906866
         self._neko_id = 2837539873
 
