@@ -39,6 +39,6 @@ MONGO_URL = os.environ['MONGO_URL']
 
 STARTUP = ['extensions.rolz', 'extensions.twitter', 'extensions.choose',
            'extensions.nwod', 'extensions.tarot', 'extensions.value',
-           'extensions.wh', 'extensions.vibe']
+           'extensions.wh']
 MAX_STR_SIZE = 255
 ROLZ_URL = "https://rolz.org/api/?"
