@@ -1,0 +1,51 @@
+version: "3.3"
+
+services:
+  rolz-bot:
+    build: .
+    secrets:
+      - source: discord_bot_token
+        target: discord_bot_token
+      - source: imgur_client
+        target: imgur_client
+      - source: imgur_secret
+        target: imgur_secret
+      - source: twitter_access_token
+        target: twitter_access_token
+      - source: twitter_access_token_secret
+        target: twitter_access_token_secret
+      - source: twitter_consumer_key
+        target: twitter_consumer_key
+      - source: twitter_consumer_secret
+        target: twitter_consumer_secret
+    volumes:
+      - ./rolz_bot:/opt/bot/rolz_bot
+    depends_on:
+      - mongo
+    env_file:
+      - ./.env
+
+  mongo:
+    image: mongo:3.2
+    volumes:
+      - ./docker/mongo:/data/db
+    expose:
+      - "27018"
+    ports:
+      - "27018:27017"
+
+secrets:
+  discord_bot_token:
+    file: ./docker/secrets/discord_bot_token
+  imgur_client:
+    file: ./docker/secrets/imgur_client
+  imgur_secret:
+    file: ./docker/secrets/imgur_secret
+  twitter_access_token:
+    file: ./docker/secrets/twitter_access_token
+  twitter_access_token_secret:
+    file: ./docker/secrets/twitter_access_token_secret
+  twitter_consumer_key:
+    file: ./docker/secrets/twitter_consumer_key
+  twitter_consumer_secret:
+    file: ./docker/secrets/twitter_consumer_secret

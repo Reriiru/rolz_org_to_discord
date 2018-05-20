@@ -1,5 +1,6 @@
 import codecs
 import ast
+import os
 
 ENV = 'prod'
 
@@ -24,22 +25,20 @@ def get_secret(name, *args, **kwargs):
         raise RuntimeError(u"Not found {} in Docker secrets".format(name))
 
 
-if ENV == 'dev':
-    pass
-if ENV == 'prod':
-    CONSUMER_KEY = get_secret('twitter_consumer_key')
-    CONSUMER_SECRET = get_secret('twitter_consumer_secret')
-    ACCESS_TOKEN = get_secret('twitter_access_token')
-    ACCESS_TOKEN_SECRET = get_secret('twitter_access_token_secret')
+CONSUMER_KEY = get_secret('twitter_consumer_key')
+CONSUMER_SECRET = get_secret('twitter_consumer_secret')
+ACCESS_TOKEN = get_secret('twitter_access_token')
+ACCESS_TOKEN_SECRET = get_secret('twitter_access_token_secret')
 
-    IMGUR_CLIENT = get_secret('imgur_client')
-    IMGUR_SECRET = get_secret('imgur_secret')
-    BOT_TOKEN = get_secret('discord_bot_token')
-    MONGO_STRING = 'mongodb://mongo:27017/bot-data'
+IMGUR_CLIENT = get_secret('imgur_client')
+IMGUR_SECRET = get_secret('imgur_secret')
+BOT_TOKEN = get_secret('discord_bot_token')
+
+MONGO_URL = os.environ['MONGO_URL']
 
 
 STARTUP = ['extensions.rolz', 'extensions.twitter', 'extensions.choose',
            'extensions.nwod', 'extensions.tarot', 'extensions.value',
-           'extensions.wh']
+           'extensions.wh', 'extensions.vibe']
 MAX_STR_SIZE = 255
 ROLZ_URL = "https://rolz.org/api/?"

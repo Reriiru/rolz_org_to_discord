@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import os
 from setuptools import setup, find_packages
 
 reqs = [
@@ -45,4 +44,4 @@ setup(name='rolz-bot',
       url='http://space-walross.ml',
       packages=find_packages(),
       install_requires=reqs
-)
+      )

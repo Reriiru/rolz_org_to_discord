@@ -57,33 +57,8 @@ choose_string = '''
 I choose **{}**!
 '''
 
-vibe_string = '''
-Ｖｉｂｅ　ａｗａｙ，　ｂｏｙｏｓ！
-https://www.youtube.com/watch?v=QXuIwJfwVf8
-'''
-
-shitpost_string = '''
-*flings a shitty picture*
-{}
-'''
-
-pesel_string = '''
-**Have a pesel!**
-{}
-'''
-
 response_error_string = '''
 Error! Rolz wont bloody respond!
-'''
-
-hydra_string = '''
-`Hail Hydra!`
-{}
-'''
-
-neko_string = '''
-*shamelesly ripping off features*
-{}
 '''
 
 message_too_long_string = '''
@@ -117,11 +92,6 @@ nwod_string = '''
 Nwod roll results are in for **{}**:
 Result: `{}`
 Details: `{}`
-'''
-
-tarot_string = '''
-Tarot is in for **{}**:
-{}
 '''
 
 invalid_value_string = '''

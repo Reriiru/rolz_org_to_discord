@@ -11,5 +11,12 @@ __pycache__
 # Keys
 .keys
 
-#DB
+# DS
+.DS_store
+
+# DB
 bot.db
+
+# Secrets
+docker/secrets
+docker/mongo

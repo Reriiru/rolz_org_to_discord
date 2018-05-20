@@ -1,7 +1,6 @@
-import rolz_bot.format_responses as format_responses
-
 from settings import (BOT_TOKEN, STARTUP)
 from discord.ext import commands
+from rolz_bot.format_responses import help_string
 
 bot = commands.Bot(command_prefix='!')
 
@@ -17,7 +16,7 @@ async def on_ready():
 @bot.command(name='halp')
 async def halp():
     '''Slightly more detailed help.'''
-    await bot.say(format_responses.help_string)
+    await bot.say(help_string)
 
 if __name__ == "__main__":
     for extension in STARTUP:
