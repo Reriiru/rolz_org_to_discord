@@ -11,9 +11,8 @@ class TwitterEmbeder(Embed):
 
     def __init__(self, image, type):
         super().__init__(
-                        title="Nice things are here!",
+                        title=self.FORMAT_STRINGS[type],
                         type="rich"
                     )
         self.colour = Colour.purple()
-        self.description = self.FORMAT_STRINGS[type]
         self.set_image(url=image)
