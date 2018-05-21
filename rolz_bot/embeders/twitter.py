@@ -14,5 +14,4 @@ class TwitterEmbeder(Embed):
                         title=self.FORMAT_STRINGS[type],
                         type="rich"
                     )
-        self.colour = Colour.purple()
         self.set_image(url=image)
