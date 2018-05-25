@@ -28,6 +28,20 @@ class Nwod(Roller):
 
         return final_result
 
+    async def _find_explosion(self, dice_query, result):
+        if dice_query.find('e') != -1:
+            if int(dice_query[dice_query.find('e')+1]):
+                await self.bot.say(format_responses.invalid_roll_string)
+                return
+
+            exploded = await self._exploded(
+                                    int(dice_query[dice_query.find('e')+1]),
+                                    result)
+        else:
+            exploded = await self._exploded(10, result)
+        
+        return exploded
+
     async def _nwod(self, ctx, dice):
         dice_query = "".join(dice)
 
@@ -40,30 +54,24 @@ class Nwod(Roller):
             failed_query = str(failed_query) + 'd10e8'
             failed_result = await self._roll_dice(failed_query)
 
-            if dice_query.find('e') != -1:
-                exploded = await self._exploded(
-                                       int(dice_query[dice_query.find('e')+1]),
-                                       result)
+            exploded = await self._find_explosion(dice_query, result)
+            if exploded:
+                result['result'] += failed_result['result'] + exploded['result']
+                result['details'] += (' ' + failed_result['details'] +
+                                      exploded['details'])
             else:
-                exploded = await self._exploded(10, result)
-
-            result['result'] += failed_result['result'] + exploded['result']
-
-            result['details'] += (' ' + failed_result['details'] +
-                                  exploded['details'])
+                return
 
         else:
             roll_query = dice_query.split('e')[0] + 'd10e8'
             result = await self._roll_dice(roll_query)
 
-            if dice_query.find('e') != -1:
-                exploded = await self._exploded(
-                                       int(dice_query[dice_query.find('e')+1]),
-                                       result)
+            exploded = await self._find_explosion(dice_query, result)
+            if exploded:
+                result['result'] += exploded['result']
+                result['details'] += ' ' + exploded['details']
             else:
-                exploded = await self._exploded(10, result)
-            result['result'] += exploded['result']
-            result['details'] += ' ' + exploded['details']
+                return
 
         response_string = format_responses.nwod_string
         response_string = response_string.format(
