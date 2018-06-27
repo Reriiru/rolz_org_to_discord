@@ -3,6 +3,7 @@ venv
 
 #VS Code Gubbins
 .vscode
+vcs.xml
 
 # Cache
 __pycache__
