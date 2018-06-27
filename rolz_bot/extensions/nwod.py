@@ -30,7 +30,7 @@ class Nwod(Roller):
 
     async def _find_explosion(self, dice_query, result):
         if dice_query.find('e') != -1:
-            if int(dice_query[dice_query.find('e')+1]) == 1:
+            if int(dice_query[dice_query.find('e')+1]) < 2:
                 await self.bot.say(format_responses.invalid_roll_string)
                 return
 
