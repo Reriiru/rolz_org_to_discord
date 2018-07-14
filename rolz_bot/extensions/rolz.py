@@ -11,7 +11,6 @@ class Rolz(Roller):
 
     async def _roll(self, ctx, dice):
         dice_query = "".join(dice)
-        dice_query = quote(dice_query, safe='')
 
         result = await self._roll_dice(dice_query)
 
