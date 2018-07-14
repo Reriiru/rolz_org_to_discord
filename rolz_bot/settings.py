@@ -34,6 +34,7 @@ IMGUR_CLIENT = get_secret('imgur_client')
 IMGUR_SECRET = get_secret('imgur_secret')
 BOT_TOKEN = get_secret('discord_bot_token')
 
+INVITE_LINK = os.environ['INVITE_LINK']
 MONGO_URL = os.environ['MONGO_URL']
 
 

@@ -1,4 +1,4 @@
-from settings import (BOT_TOKEN, STARTUP)
+from rolz_bot.settings import (BOT_TOKEN, STARTUP, INVITE_LINK)
 from discord.ext import commands
 from rolz_bot.format_responses import help_string
 
@@ -11,6 +11,10 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+
+@bot.command(name='invite')
+async def invite():
+    await bot.say(INVITE_LINK)
 
 
 @bot.command(name='halp')
