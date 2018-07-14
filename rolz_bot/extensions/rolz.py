@@ -10,9 +10,7 @@ class Rolz(Roller):
     '''Frontend for the rolz proxy.'''
 
     async def _roll(self, ctx, dice):
-        dice_query = "".join(dice)
-
-        result = await self._roll_dice(dice_query)
+        result = await self._roll_dice_raw(dice)
 
         pre_format_string = format_responses.roll_string
         response_string = pre_format_string.format(

@@ -43,6 +43,17 @@ class Roller(object):
         await self.bot.say(response_string)
         raise ValueError('Result have not passed validation.')
 
+    async def _roll_dice_raw(self, dice):
+        revised_dice = []
+        for entry in dice:
+            if entry.find('#') != -1:
+                break
+            else:
+                revised_dice.append(entry)
+
+        dice_query = "".join(revised_dice)
+        return await self._roll_dice(dice_query)
+
     async def _roll_dice(self, dice_query):
         try:
             result = await proxy(dice_query)
