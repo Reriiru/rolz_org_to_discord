@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 reqs = [
-    'aiohttp==1.0.5',
+    'aiohttp==3.9.2',
     'astroid==1.5.3',
     'async-timeout==2.0.0',
     'Cerberus==1.1',
